@@ -5,8 +5,8 @@ Prompt: United Way
 
 ## Basic Features & Functionalities
 
-* User Log-In/Register
-* * View Products/Homeview
+* User Log-In/Register *
+  * View Products/Homeview
 
 
 
