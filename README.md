@@ -17,8 +17,11 @@ Prompt: United Way
   
 ## Creative Features & Functions
 * Leaderboard/Ranking
-*Social Media
+* Social Media
  * Focus on FB
+ * Share where you donated
+ * Track where money goes
+ 
  
 
 
