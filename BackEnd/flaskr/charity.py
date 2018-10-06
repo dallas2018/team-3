@@ -42,5 +42,3 @@ def getCharityInfo():
     
 
     return 'Nothing Yet'
-
-
