@@ -2,23 +2,26 @@ import functools
 import requests
 import json
 import base64
-# from urllib.parse import urlencode
-
+from flask_pymongo import PyMongo
+from bson import json_util
 from flask import (
-    Blueprint, redirect, request, jsonify
+    Flask, Blueprint, redirect, request, jsonify
 )
 
-REDIRECT_URI = 'soundhub://callback'
-
+app = Flask(__name__)
+app.config["MONGO_URI"] = "mongodb://localhost:27017/charityMarket"
+mongo = PyMongo(app)
 
 bp = Blueprint('buy', __name__, url_prefix='/buy')
 
-@bp.route('/', methods=('GET', 'POST'))
-def getAllProductsForBuyPage():
+@bp.route('/getSellables', methods=('GET', 'POST'))
+def getSellables():
     # returns a json file that contains all the products to display
-    pass
+    products = mongo.db.Products.find()
+    x = [json.loads(json.dumps(y, default=json_util.default)) for y in products]
+    return str(x)
 
-@bp.route('/buy', methods=('GET', 'POST'))
+@bp.route('/buyItem', methods=('GET', 'POST'))
 def getAllProductsForBuyPages():
     ''' input: /buy?productId=12
         remove the item from owner's live sell list
@@ -27,6 +30,7 @@ def getAllProductsForBuyPages():
         add it to the transcation of the seller
         refresh the client home page
     '''
+    
     # returns a json file that contains all the products to display
     # productId =  request.args.get('productId')
     pass
