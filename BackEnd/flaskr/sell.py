@@ -24,9 +24,6 @@ app.config['UPLOAD_FOLDER'] = 'static/'
 
 mongo = PyMongo(app)
 
-REDIRECT_URI = 'soundhub://callback'
-
-
 bp = Blueprint('sell', __name__, url_prefix='/sell')
 
 # @bp.route('/', methods=('GET', 'POST'))
@@ -69,8 +66,9 @@ def sell():
     f = os.path.join(app.config['UPLOAD_FOLDER'], new_file_name)    
     file.save(f)
 
-    p_id = uuid.uuid1()
-    mongo.db.Products.insert({'productId': p_id, 'name': name, 'price': price, 'address': f})
+    p_id = str(uuid.uuid1())
+    
+    mongo.db.Products.insert({'productId': p_id, 'name': name, 'price': price, 'address': f, 'owner': authId})
     mongo.db.Users.find_one_and_update({'authId': authId}, {'$addToSet': {'currentProducts': p_id}})
     
 
