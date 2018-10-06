@@ -18,7 +18,7 @@ def create_app(test_config=None):
     )
 
     mongo = PyMongo(app)
-    
+
     if test_config is None:
         # load the instance config, if it exists, when not testing
         app.config.from_pyfile('config.py', silent=True)
@@ -46,6 +46,11 @@ def create_app(test_config=None):
 
     from . import addUser
     app.register_blueprint(addUser.bp)
+
+    # json_data = json.load(open("flaskr/charityQuery.json"))
+    # hits = json_data["data"]["hits"]
+    # x = [json.loads(json.dumps(y, default=json_util.default)) for y in hits]
+    # mongo.db.Charities.insert_many((x))
 
     @app.route('/')
     def hello():
