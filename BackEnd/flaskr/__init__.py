@@ -1,7 +1,6 @@
 import os
 from flask import Flask
 
-
 def create_app(test_config=None):
     # create and configure the app
     app = Flask(__name__, instance_relative_config=True)
@@ -23,12 +22,20 @@ def create_app(test_config=None):
     except OSError:
         pass
 
-    from . import auth
-    app.register_blueprint(auth.bp)
+    from . import charity
+    app.register_blueprint(charity.bp)
 
-    # a simple page that says hello
+    from . import acc
+    app.register_blueprint(acc.bp)
+    
+    from . import buy
+    app.register_blueprint(buy.bp)
+    
+    from . import sell
+    app.register_blueprint(sell.bp)
+
     @app.route('/')
     def hello():
-        return 'Hello, World!'
+        return 'Home Page'
 
     return app
