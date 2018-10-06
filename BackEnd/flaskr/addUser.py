@@ -31,3 +31,5 @@ def addUser():
     b = request.form['name']
 
     mongo.db.Users.insert({'authId': a, 'name': b, 'favCharities': [], 'transactions': [], 'donations':[], 'currentProducts':[]})
+
+    return jsonify({'success': True})

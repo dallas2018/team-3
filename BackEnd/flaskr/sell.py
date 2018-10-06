@@ -5,6 +5,8 @@ import base64
 import os
 from bson import json_util
 import uuid
+import random
+import string
 
 # from urllib.parse import urlencode
 from flask import (
@@ -54,24 +56,22 @@ def sell():
     input: name, image, price, description, charities
     store the produce in the product list
     add the product to the live owner's live list
-    add it to the transaction db
     return status
     '''
     if request.method == 'GET':
-        return {status: 404, err: " ERROR 404 - GET REQUESTS NOT SERVICED AT THIS ENDPOINT "}
+        return jsonify({status: 404, err: " ERROR 404 - GET REQUESTS NOT SERVICED AT THIS ENDPOINT "})
     
     name = request.form['name']
     file = request.files['image']
     price = int(request.form['price'])
     authId = request.form['authId']
-    new_file_name = ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(N))
+    new_file_name = ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(12)) +'.' + file.filename.split('.')[1]
     f = os.path.join(app.config['UPLOAD_FOLDER'], new_file_name)    
     file.save(f)
 
     p_id = uuid.uuid1()
     mongo.db.Products.insert({'productId': p_id, 'name': name, 'price': price, 'address': f})
     mongo.db.Users.find_one_and_update({'authId': authId}, {'$addToSet': {'currentProducts': p_id}})
-    t_id = uuid.uuid1()
-    mongo.db.Transactions.insert({'t_id': t_id, 'u1': auth})
+    
 
-    return "workeddd"
+    return jsonify({'status': 'posted successfully'})
