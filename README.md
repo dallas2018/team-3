@@ -22,6 +22,15 @@ Prompt: United Way
  * Share where you donated
  * Track where money goes
  
+ ## Team Members
+ 
+ * Clare 
+ * Kevin
+ * Vasu
+ * Ishan
+ * Andy
+ * Abhi
+ 
  
 
 
