@@ -2,13 +2,23 @@ import functools
 import requests
 import json
 import base64
+import os
+from bson import json_util
+
 # from urllib.parse import urlencode
 from flask import (
-    Blueprint, redirect, request, jsonify, Flask
+    Blueprint, redirect, request, jsonify, Flask,render_template
 )
 from flask_pymongo import PyMongo
+
+UPLOAD_FOLDER = os.path.basename('/static/')
+
 app = Flask(__name__, instance_relative_config=True)
+
+
 app.config["MONGO_URI"] = "mongodb://localhost:27017/charityMarket"
+app.config['UPLOAD_FOLDER'] = 'static/'
+
 mongo = PyMongo(app)
 
 REDIRECT_URI = 'soundhub://callback'
@@ -47,7 +57,12 @@ def sell():
     return status
     '''
     if request.method == 'GET':
-        return {err: " ERROR 404 - GET REQUESTS NOT SERVICED AT THIS ENDPOINT "}
+        return {status: 404, err: " ERROR 404 - GET REQUESTS NOT SERVICED AT THIS ENDPOINT "}
     
-    name = request.form['']
-    pass
+    name = request.form['name']
+    file = request.files['image']
+    f = os.path.join(app.config['UPLOAD_FOLDER'], file.filename)
+    
+    file.save(f)
+
+    return "workeddd"
