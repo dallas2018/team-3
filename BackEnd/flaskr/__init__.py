@@ -32,17 +32,16 @@ def create_app(test_config=None):
     app.register_blueprint(charity.bp)
 
     from . import acc
-    # from acc import getDb
-    # getDb(mongo)
     app.register_blueprint(acc.bp)
     
     from . import buy
     app.register_blueprint(buy.bp)
     
     from . import sell
-    # from sell import getDb
-    # getDb(mongo)
     app.register_blueprint(sell.bp)
+
+    from . import addUser
+    app.register_blueprint(addUser.bp)
 
     @app.route('/')
     def hello():

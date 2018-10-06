@@ -4,6 +4,7 @@ import json
 import base64
 import os
 from bson import json_util
+import uuid
 
 # from urllib.parse import urlencode
 from flask import (
@@ -26,14 +27,14 @@ REDIRECT_URI = 'soundhub://callback'
 
 bp = Blueprint('sell', __name__, url_prefix='/sell')
 
-@bp.route('/', methods=('GET', 'POST'))
-def getAllProductsForBuyPage():
-    # returns a json file that contains all the products to display
-    print(mongo)
-    x = [json.dumps(y, default=json_util.default) for y in mongo.db.Users.find({})]
-    print(x)
+# @bp.route('/', methods=('GET', 'POST'))
+# def getAllProductsForBuyPage():
+#     # returns a json file that contains all the products to display
+#     print(mongo)
+#     x = [json.dumps(y, default=json_util.default) for y in mongo.db.Users.find({})]
+#     print(x)
 
-    return 'selling../'
+#     return 'selling../'
 
 
 @bp.route('/getSellValue', methods=('GET', 'POST'))
@@ -61,8 +62,16 @@ def sell():
     
     name = request.form['name']
     file = request.files['image']
-    f = os.path.join(app.config['UPLOAD_FOLDER'], file.filename)
-    
+    price = int(request.form['price'])
+    authId = request.form['authId']
+    new_file_name = ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(N))
+    f = os.path.join(app.config['UPLOAD_FOLDER'], new_file_name)    
     file.save(f)
+
+    p_id = uuid.uuid1()
+    mongo.db.Products.insert({'productId': p_id, 'name': name, 'price': price, 'address': f})
+    mongo.db.Users.find_one_and_update({'authId': authId}, {'$addToSet': {'currentProducts': p_id}})
+    t_id = uuid.uuid1()
+    mongo.db.Transactions.insert({'t_id': t_id, 'u1': auth})
 
     return "workeddd"
