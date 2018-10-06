@@ -19,7 +19,7 @@ def getAllProductsForBuyPage():
     pass
 
 @bp.route('/buy', methods=('GET', 'POST'))
-def getAllProductsForBuyPage():
+def getAllProductsForBuyPages():
     ''' input: /buy?productId=12
         remove the item from owner's live sell list
         remove the item from buy list
