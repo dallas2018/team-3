@@ -22,7 +22,9 @@ bp = Blueprint('charity', __name__, url_prefix='/charity')
 
 @bp.route('/', methods=('GET', 'POST'))
 def printHello():
-    return('This is the Charity Endpoint')
+    c = mongo.db.Charities.find({})
+    x = [[(json.dumps(y, default=json_util.default)), '\n'] for y in c]
+    return str(x)
 
 @bp.route('/addFav', methods=('GET', 'POST'))
 def addFav():
